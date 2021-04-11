@@ -1,5 +1,5 @@
 const express = require('express');
-const { listar, guardar, borrar, actualizar, getUsuario } = require('../controller/usuario_controller');
+const { listar, guardar, borrar, actualizar, getUsuario } = require('../../controller/usuario_controller');
 const router = express.Router();
 
 router.get('/usuario', listar);

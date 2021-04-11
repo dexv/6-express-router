@@ -1,6 +1,8 @@
 const express = require('express');
-const { listar, guardar, borrar, actualizar, getProducto } = require('../controller/producto_controller');
+const { listar, guardar, borrar, actualizar, getProducto, productoById } = require('../../controller/producto_controller');
 const router = express.Router();
+
+router.param('id', productoById);
 
 router.get('/producto', listar);
 router.get('/producto/:id', getProducto);

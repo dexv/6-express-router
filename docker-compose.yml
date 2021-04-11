@@ -1,0 +1,12 @@
+version: '3.9'
+
+services:
+
+  mongodb:
+    image: mongo:bionic
+    container_name: mongodb-bionic
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=mongoadmin
+      - MONGO_INITDB_ROOT_PASSWORD=secret
