@@ -69,7 +69,7 @@ schemaUsuario.methods.removeCarrito = function(docProducto){
 	let index = this.cart.items.findIndex(item => {
     	return item.productId.toString() == docProducto._id.toString()
   	});
-	let _cantidad = 1;
+	let _cantidad;
 	let newCartItems = [...this.cart.items];
 
 	if(index>=0){
