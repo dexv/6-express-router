@@ -13,7 +13,7 @@ function errorHandler(data, next, err=null){
 
 function listar(req, res, next){
     ModelProducto.find()
-    .select('-imagen')
+    //.select('-imagen')
     .exec((err, item) => {
         if(err || !item)
             return errorHandler(item, next, err);
@@ -24,7 +24,6 @@ function listar(req, res, next){
 }
 
 function productoById(req, res, next, id){
-    //let id = req.params.id;
     ModelProducto.findById(id, (err, item) => {
         if(err || !item)
             return errorHandler(item, next, err);
@@ -37,6 +36,11 @@ function getProducto(req, res, next){
     return res.json({
         data: req.item
     });
+}
+
+const imagen = (req, res) => {
+    res.set('Content-Type', req.item.imagen.contentType);
+    return res.send(req.item.imagen.data);
 }
 
 function guardar(req, res, next){
@@ -65,27 +69,21 @@ function guardar(req, res, next){
     });
 }
 
-function borrar(req, res, next){
-    let id = req.params.id;
-    ModelProducto.findByIdAndRemove(id, (err, item) => {
+function borrar(req, res, next){   
+    req.item.disponible = false;
+    req.item.save((err, item) => {
         if(err || !item)
             return errorHandler(item, next, err);
         return res.json({
             data: item
         });
-    });
+    })
 }
 
 function actualizar(req, res, next){
     let id = req.params.id;
-    let data = {
-        producto_nombre : req.body.producto_nombre,
-        descripcion : req.body.descripcion,
-        precio : req.body.precio,
-        stock : req.body.stock,
-        categoria_nombre : req.body.categoria_nombre
-    }
-    ModelProducto.findByIdAndUpdate(id, data, {new:true}, (err, item) => {
+
+    ModelProducto.findByIdAndUpdate(id, req.body, {new:true}, (err, item) => {
         if(err || !item)
             return errorHandler(item, next, err);
         return res.json({
@@ -97,6 +95,7 @@ function actualizar(req, res, next){
 module.exports = {
     productoById,
     listar,
+    imagen,
     getProducto,
     guardar,
     borrar,
